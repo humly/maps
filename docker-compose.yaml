@@ -7,4 +7,4 @@ services:
       - POSTGRES_PASSWORD=mypassword
       - POSTGRES_DB=maps_db
     ports:
-      - '5432:5432'
+      - "5432:5432"
