@@ -4,7 +4,7 @@ Various maps used by Humly
 
 # Structure
 
-Map files are stored in countries/`country`/markets/`market`
+Map files are stored in maps/`country`/`market`.geo.json
 
 # Setup
 
