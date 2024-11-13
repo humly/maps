@@ -33,7 +33,7 @@ async function geoIntersects([filenameA, filenameB]: [string, string]) {
   return !!intersects;
 }
 
-Deno.test("intersects", async () => {
+Deno.test("Make sure no markets intersect", async (t) => {
   const basePath = "./maps/uk";
   const geoJsonFilenames = [...Deno.readDirSync(basePath)]
     .map((entry) => `${basePath}/${entry.name}`)
@@ -41,11 +41,13 @@ Deno.test("intersects", async () => {
 
   const combinations = geoJsonFilenames.map((filenameA) =>
     geoJsonFilenames
-      .map((filenameB) => [filenameA, filenameB])
+      .map((filenameB) => [filenameA, filenameB].sort())
       .filter((pair) => pair[0] !== pair[1])
-      .flat() as [string, string]
-  );
+  ).flat() as [string, string][];
 
-  const intersects = await Promise.all(combinations.map(geoIntersects));
-  expect(intersects.every(Boolean)).toBe(true);
+  for (const combination of combinations) {
+    await t.step(`${combination} should not intersect`, async () => {
+       expect(await geoIntersects(combination)).toBeFalsy();
+    })
+  }
 });
