@@ -20,7 +20,7 @@ jobs:
         with:
           deno-version: v2.x
 
-      - run: docker-compose up
+      - run: docker compose up
 
       - run: deno fmt --check .
 
