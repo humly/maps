@@ -34,7 +34,7 @@ async function geoIntersects([filenameA, filenameB]: [string, string]) {
 }
 
 Deno.test("intersects", async () => {
-  const basePath = './maps/uk';
+  const basePath = "./maps/uk";
   const geoJsonFilenames = [...Deno.readDirSync(basePath)]
     .map((entry) => `${basePath}/${entry.name}`)
     .filter((name) => name.endsWith(".geo.json"));
