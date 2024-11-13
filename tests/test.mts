@@ -47,7 +47,7 @@ Deno.test("Make sure no markets intersect", async (t) => {
 
   for (const combination of combinations) {
     await t.step(`${combination} should not intersect`, async () => {
-       expect(await geoIntersects(combination)).toBeFalsy();
-    })
+      expect(await geoIntersects(combination)).toBeFalsy();
+    });
   }
 });
