@@ -11,6 +11,9 @@ for (const country of countries) {
   for (const subdir of subdirs) {
     const subdirCollection = createFeatureCollection();
     const basePath = `./maps/${country}/${subdir}/`;
+
+    await Deno.mkdir(basePath, { recursive: true });
+
     const geoJsonFilenames = [...Deno.readDirSync(basePath)]
       .map((entry) => `${basePath}${entry.name}`)
       .filter((name) => name.endsWith(".geo.json"));
