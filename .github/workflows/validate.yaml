@@ -1,0 +1,31 @@
+name: Validate map files
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - run: docker compose up -d
+
+      - run: deno fmt --check .
+
+      - run: deno lint .
+
+      - run: deno test --allow-all
+
+      - run: docker-compose down
