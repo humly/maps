@@ -26,11 +26,11 @@ for (const country of countries) {
     await Deno.mkdir(`./generated/${country}`, { recursive: true });
     await Deno.writeTextFile(
       `./generated/${country}/${subdir}.geo.json`,
-      JSON.stringify(subdirCollection, null, 2),
+      JSON.stringify(subdirCollection, null, 2) + "\n",
     );
   }
   await Deno.writeTextFile(
     `./generated/${country}.geo.json`,
-    JSON.stringify(countryCollection, null, 2),
+    JSON.stringify(countryCollection, null, 2) + "\n",
   );
 }

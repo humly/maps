@@ -29,3 +29,4 @@ deno fmt
 
 ```sh
 deno run --allow-all scripts/generate_feature_collections.mts
+```
