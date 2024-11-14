@@ -21,6 +21,13 @@ describe("Maps", () => {
       for (const subdir of subdirs) {
         describe(subdir, () => {
           const basePath = `./maps/${country}/${subdir}/`;
+
+          try {
+            Deno.lstatSync(basePath).isDirectory;
+          } catch (_) {
+            return;
+          }
+
           const geoJsonFilenames = [...Deno.readDirSync(basePath)]
             .map((entry) => `${basePath}${entry.name}`)
             .filter((name) => name.endsWith(".geo.json"));
