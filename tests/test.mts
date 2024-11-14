@@ -2,33 +2,44 @@ import { describe, it } from "jsr:@std/testing/bdd";
 import { expect } from "jsr:@std/expect";
 import { geoIntersects, getCombinations } from "./utils.mts";
 
-describe("utils", () => {
+describe("Utils", () => {
   it("getCombinations", () => {
     expect(getCombinations(["a1", "a2", "b1"])).toEqual([
       ["a1", "a2"],
-      ["a2", "b1"],
       ["a1", "b1"],
+      ["a2", "b1"],
     ]);
   });
 });
 
-describe("maps", () => {
-  const basePath = "./maps/uk/";
-  const geoJsonFilenames = [...Deno.readDirSync(basePath)]
-    .map((entry) => `${basePath}${entry.name}`)
-    .filter((name) => name.endsWith(".geo.json"));
-  const combinations = getCombinations(geoJsonFilenames);
+describe("Maps", () => {
+  const countries = [...Deno.readDirSync("maps")].map((c) => c.name);
+  const subdirs = ["markets", "areas"];
 
-  describe("Make sure no markets intersect", () => {
-    for (const combination of combinations) {
-      const readableName = combination
-        .join(",")
-        .replaceAll(basePath, "")
-        .replaceAll(".geo.json", "");
+  for (const country of countries) {
+    describe(country, () => {
+      for (const subdir of subdirs) {
+        describe(subdir, () => {
+          const basePath = `./maps/${country}/${subdir}/`;
+          const geoJsonFilenames = [...Deno.readDirSync(basePath)]
+            .map((entry) => `${basePath}${entry.name}`)
+            .filter((name) => name.endsWith(".geo.json"));
+          const combinations = getCombinations(geoJsonFilenames);
 
-      it(`${readableName} should not intersect`, async () => {
-        expect(await geoIntersects(combination)).toBeFalsy();
-      });
-    }
-  });
+          describe("should not intersect", () => {
+            for (const combination of combinations) {
+              const readableName = combination
+                .join(",")
+                .replaceAll(basePath, "")
+                .replaceAll(".geo.json", "");
+
+              it(readableName, async () => {
+                expect(await geoIntersects(combination)).toBeFalsy();
+              });
+            }
+          });
+        });
+      }
+    });
+  }
 });

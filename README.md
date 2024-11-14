@@ -24,3 +24,8 @@ deno test --allow-all
 ```sh
 deno fmt
 ```
+
+# Generate combined maps from areas and markets
+
+```sh
+deno run --allow-all scripts/generate_feature_collections.mts
