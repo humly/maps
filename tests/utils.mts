@@ -1,6 +1,6 @@
 import postgres from "https://deno.land/x/postgresjs@v3.4.5/mod.js";
 
-const getSQL = () => {
+export const getSQL = () => {
   const sql = postgres({
     host: "localhost",
     port: 5432,

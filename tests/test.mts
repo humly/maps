@@ -1,6 +1,6 @@
 import { describe, it } from "jsr:@std/testing/bdd";
 import { expect } from "jsr:@std/expect";
-import { geoIntersects, getCombinations } from "./utils.mts";
+import { geoIntersects, getCombinations, getSQL } from "./utils.mts";
 
 describe("Utils", () => {
   it("getCombinations", () => {
@@ -13,6 +13,22 @@ describe("Utils", () => {
 });
 
 describe("Maps", () => {
+  it("connects to db", async () => { 
+    let connected = false;
+    for (let retries = 0; retries < 10 && !connected; ++retries) {
+      try {
+        const sql = getSQL();
+        await sql`SELECT 1`;
+        connected = true;
+      } catch (_) {
+        // wait a bit and retry
+        console.log(`Couldn't connect to DB. Retrying... (attempt ${retries})`)
+        await new Promise(resolve => setTimeout(resolve, 1000))
+      }
+    }
+    expect (connected).toBeTruthy();
+  })
+
   const countries = [...Deno.readDirSync("maps")].map((c) => c.name);
   const subdirs = ["markets", "areas"];
 
