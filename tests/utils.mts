@@ -32,24 +32,11 @@ export async function geoIntersects([filenameA, filenameB]: [string, string]) {
   return !!intersects;
 }
 export function getCombinations(items: string[]): [string, string][] {
-  const seen = new Set();
-  return items.map((itemA) => {
-    for (const itemB of items) {
-      if (itemA === itemB) {
-        continue;
-      }
-
-      const pair = [itemA, itemB].sort() as [string, string];
-
-      const key = `${pair[0]},${pair[1]}`;
-
-      if (seen.has(key)) {
-        continue;
-      }
-
-      seen.add(key);
-
-      return pair;
+  const pairs: [string, string][] = [];
+  for (let i = 0; i < items.length; i++) {
+    for (let j = i + 1; j < items.length; j++) {
+      pairs.push([items[i], items[j]]);
     }
-  }).filter((pair) => pair !== undefined);
+  }
+  return pairs;
 }
