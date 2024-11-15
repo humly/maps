@@ -20,12 +20,10 @@ jobs:
         with:
           deno-version: v2.x
 
-      - run: docker compose up -d
-
       - run: deno fmt --check .
 
       - run: deno lint .
 
-      - run: deno test --allow-all --hide-stacktraces
+      - run: docker compose up -d
 
-      - run: docker-compose down
+      - run: deno test --allow-all
